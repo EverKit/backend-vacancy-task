@@ -1,0 +1,19 @@
+{
+  "name": "backend-vacancy-task",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "repository": "https://github.com/EverKit/backend-vacancy-task.git",
+  "author": "EverKit",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "nodemon --experimental-json-modules index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.1",
+    "swagger-ui-express": "^4.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}

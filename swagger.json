@@ -1,0 +1,397 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "EverKit Backend Task",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "/api"
+    }
+  ],
+  "paths": {
+    "/articles": {
+      "get": {
+        "description": "Возвращает список опубликованных статей с пагинацией. Можно отфильтровать статьи по тегам. Можно указать, какие поля статьи вывести. Статьи отсортированы по убыванию даты публикации, но первыми выводятся закрепленные статьи.",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Запрашиваемые поля статьи - ключи, перечисленные через запятую",
+            "example": "slug,title,name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tags",
+            "in": "query",
+            "description": "Фильтр статей по тегам - идентификаторы тегов, перечисленные через запятую",
+            "example": "design,news",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Индекс запрашиваемой страницы, начиная с нуля",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Количество статей на странице",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Article"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationInfo"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка валидации параметров",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/articles/search": {
+      "get": {
+        "description": "Поиск статей по названию, описанию или тегу",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Запрашиваемые поля статьи - ключи, перечисленные через запятую",
+            "example": "slug,title,name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "description": "Поисковый запрос",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Индекс запрашиваемой страницы, начиная с нуля",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Количество статей на странице",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Article"
+                      }
+                    },
+                    "pagination": {
+                      "$ref": "#/components/schemas/PaginationInfo"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка валидации параметров",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/articles/pinned": {
+      "get": {
+        "description": "Возвращает список опубликованных закрепленных статей. Можно указать, какие поля статьи вывести. Статьи отсортированы по убыванию даты публикации.",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Запрашиваемые поля статьи - ключи, перечисленные через запятую",
+            "example": "slug,title,name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Article"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка валидации параметров",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/articles/{slug}": {
+      "get": {
+        "description": "Возвращает опубликованную статью",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path"
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Запрашиваемые поля статьи - ключи, перечисленные через запятую",
+            "example": "slug,title,name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка валидации параметров",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "404"
+          }
+        }
+      }
+    },
+    "/tags": {
+      "get": {
+        "description": "Возвращает список тегов статей. Можно указать, какие поля тега вывести. Теги отсортированы по убыванию количества статей.",
+        "parameters": [
+          {
+            "name": "fields",
+            "in": "query",
+            "description": "Запрашиваемые поля тега - ключи, перечисленные через запятую",
+            "example": "slug,title",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Tag"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ошибка валидации параметров",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Article": {
+        "type": "object",
+        "description": "Статья",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Уникальный идентификатор статьи"
+          },
+          "title": {
+            "type": "string",
+            "description": "Название статьи"
+          },
+          "description": {
+            "type": "string",
+            "description": "Краткое описание статьи"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["published", "draft"],
+            "description": "Статус статьи - опубликована/набросок"
+          },
+          "pinned": {
+            "type": "boolean",
+            "description": "Закреплена ли статья"
+          },
+          "timestamp": {
+            "type": "integer",
+            "description": "Unix timestamp публикации статьи",
+            "nullable": true
+          },
+          "tags": {
+            "type": "array",
+            "description": "Массив тегов статьи",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          }
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "description": "Тег статьи",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Уникальный идентификатор тега"
+          },
+          "title": {
+            "type": "string",
+            "description": "Название тега"
+          },
+          "articlesCount": {
+            "type": "integer",
+            "description": "Количество опубликованных статей с данным тегом"
+          }
+        }
+      },
+      "PaginationInfo": {
+        "type": "object",
+        "description": "Информация о пагинации при выводе списка",
+        "properties": {
+          "currentPage": {
+            "type": "integer",
+            "description": "Индекс текущей страницы, начиная с нуля"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Размер страницы"
+          },
+          "pagesCount": {
+            "type": "integer",
+            "description": "Общее количество страниц"
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "description": "Информация об ошибках валидации",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Общее описание ошибки"
+          },
+          "fields": {
+            "type": "object",
+            "description": "Описание ошибок по полям/параметрам",
+            "properties": {
+              "key1": {
+                "type": "array",
+                "description": "Ошибки поля key1",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "key2": {
+                "type": "array",
+                "description": "Ошибки поля key2",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
