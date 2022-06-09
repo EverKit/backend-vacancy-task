@@ -6,6 +6,9 @@
 По адресу http://localhost:3000 откроется swagger с документацией API. 
 Нужно реализовать API в соответствии с документацией.
 Данные лежат в папке [data](https://github.com/EverKit/backend-vacancy-task/tree/main/data).
+Для ознакомления с API также можно зайти [сюда](https://generator3.swagger.io/ui/), заменить в шапке
+путь до файла с документацией на https://raw.githubusercontent.com/EverKit/backend-vacancy-task/main/swagger.json и нажать
+кнопку 'Explore'.
 
 Задание можно исполнить на JS или TS.
 Можно использовать любую базу данных или не использовать БД вообще (если БД используется, не забудь запушить код ее наполнения).
